@@ -21,7 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function(){
     Route::post('/login', 'AuthController@authenticate');
-    Route::get('/login', 'AuthController@failedAuthentication')->name('login');
+    Route::post('/register', 'AuthController@register');
+    Route::get('/unauthenticated', 'AuthController@failedAuthentication')->name('login');
 });
 
 Route::middleware('auth:sanctum')->prefix('recipes')->group(function () {

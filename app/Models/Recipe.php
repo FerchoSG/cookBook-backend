@@ -26,7 +26,7 @@ class Recipe extends Model
      *
      * @return \Illuminat1JRpfow927XUoPtmgataMC5m5aLewzNYUP
      */
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

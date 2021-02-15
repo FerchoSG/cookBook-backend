@@ -32,15 +32,40 @@ class AuthController extends Controller
        return response()->json([
            "token"      => $user->createToken($request->email)->plainTextToken,
            "message"    => "Authenticated",
-           "error"      => false
+           "error"      => false,
+           "user"       => $user,
+           "recipes"    => $user->recipes()
        ]);
    }
 
    public function register(Request $request)
    {
-       $validation = $request->validate([
 
-       ]);
+       try {
+           $validation = $request->validate([
+               'name'  => 'required|string',
+               'email'  => 'required|string',
+               'password'  => 'required|string',
+          ]);
+
+           $user = User::Create([
+                'name'  => $request->name,
+                'email'  => $request->email,
+                'password'  => Hash::make($request->password)
+           ]);
+
+           return response()->json([
+            "token"      => $user->createToken($request->email)->plainTextToken,
+            "message"    => "Authenticated",
+            "error"      => false,
+            "user"       => $user
+        ]);
+       } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Provide a valid user information',
+                'error'   => true
+            ]);
+       }
    }
 
    public function failedAuthentication()
