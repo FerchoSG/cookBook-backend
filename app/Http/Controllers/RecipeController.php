@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Recipe;
+use App\Models\User;
 class RecipeController extends Controller
 {
     /**
@@ -11,17 +13,17 @@ class RecipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $recipes = Recipe::all();
-
-        // dd($recipes);
-        foreach($recipes as $recipe)
+        $user = User::with('recipes')->find($request->user()->id);
+        $userRecipes = $user->recipes;
+        foreach($userRecipes as $recipe)
         {
             $recipe->ingredients = json_decode($recipe->ingredients);
         }
-
-        return $recipes;
+        return response()->json([
+            "recipes" => $userRecipes
+        ]);
     }
 
     /**

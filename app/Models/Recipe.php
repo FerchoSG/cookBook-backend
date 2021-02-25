@@ -21,13 +21,9 @@ class Recipe extends Model
     'user_id'
     ];
 
-    /**
-     * Get the user that owns the Recipe
-     *
-     * @return \Illuminat1JRpfow927XUoPtmgataMC5m5aLewzNYUP
-     */
+
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 }
